@@ -115,8 +115,9 @@ def smart_discography_filter(
         Used to group two albums that may be named similarly, but not exactly
         the same.
         """
-        r = re.match(r"([^\(]+)(?:\s*[\(\[][^\)][\)\]])*", album)
-        return r.group(1).strip().lower()
+        title = album.get("title") if isinstance(album, dict) else album
+        r = re.match(r"([^\(]+)(?:\s*[\(\[][^\)][\)\]])*", title)
+        return r.group(1).strip().lower() if r else title.lower().strip()
 
     requested_artist = contents[0]["name"]
     items = [item["albums"]["items"] for item in contents][0]
